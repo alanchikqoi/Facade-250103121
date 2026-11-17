@@ -50,7 +50,7 @@ public class FlightBookingFacade {
             double baggageFee = 0.0;
             if (!"SILVER".equalsIgnoreCase(loyaltyTier) && !"GOLD".equalsIgnoreCase(loyaltyTier)) {
                 baggageFee = baggageEngine.calculateBaggageFeeUSD(bagCount, bagWeightKg);
-            }
+            }  // different fee for SILVER snd GOLD profiles.
             double totalUSD = baseFareUSD + baggageFee;
 
             double convertedTotal = currencyConverter.convertFromUSD(totalUSD, currency);
@@ -58,7 +58,7 @@ public class FlightBookingFacade {
             paymentProcessor.initializeGateway();
 
             if ("SILVER".equalsIgnoreCase(loyaltyTier)) {
-                paymentProcessor.applyPromoCode("SILVER-FREE-BAG");
+                paymentProcessor.applyPromoCode("SILVER-FREE-BAG"); // massage for SILVER profiles.
             }
             String receiptId = paymentProcessor.chargeCard(cardNumber, convertedTotal, currency);
 
@@ -74,3 +74,4 @@ public class FlightBookingFacade {
         }
     }
 }
+// I create fee calculation system for different types of profiles. Such as "STANDART", "SILVER" and "GOLD".
